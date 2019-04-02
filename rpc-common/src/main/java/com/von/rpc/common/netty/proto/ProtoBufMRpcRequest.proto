@@ -1,17 +1,15 @@
 package com.von.rpc.common.netty.proto;
 
 option java_package = "com.von.rpc.common.entity";
-option java_outer_classname = "MRpcRequest";
+option java_outer_classname = "MRpcProtoBufRequest";
 
 message ProtoBufMRpcRequest{
     //请求id
     required string requestId = 1;
     //请求参数
-    required string paramValue = 2 ;
+    required repeated parameterTypes = 2 ;
     //请求参数名称
-    required string paramName = 3 ;
+    required repeated args = 3 ;
     //请求方法名称
     required string methodName = 4;
-    //请求参数类型
-    repeated string paramStringTypes = 5;
 }

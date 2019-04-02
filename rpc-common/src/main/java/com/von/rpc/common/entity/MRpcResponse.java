@@ -41,4 +41,13 @@ public class MRpcResponse implements Serializable {
     public void setThrowable(Throwable throwable) {
         this.throwable = throwable;
     }
+
+    @Override
+    public String toString() {
+        return "MRpcResponse{" +
+                "requestId='" + requestId + '\'' +
+                ", data=" + data +
+                ", throwable=" + throwable +
+                '}';
+    }
 }

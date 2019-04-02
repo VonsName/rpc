@@ -1,8 +1,6 @@
 package com.von.rpc.netty.server;
 
 import com.von.rpc.AbstractMRpcServer;
-import com.von.rpc.common.netty.ProtoBufRequestDecoder;
-import com.von.rpc.common.netty.ProtoBufRequestEncoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -10,6 +8,11 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.serialization.ClassResolvers;
+import io.netty.handler.codec.serialization.ObjectDecoder;
+import io.netty.handler.codec.serialization.ObjectEncoder;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
@@ -25,13 +28,18 @@ public class NettyMRpcServer extends AbstractMRpcServer {
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(bossGroup, workGroup)
                 .channel(NioServerSocketChannel.class)
-                .option(ChannelOption.SO_BACKLOG, 100)
+                .option(ChannelOption.SO_BACKLOG, 1000)
+                .childOption(ChannelOption.SO_KEEPALIVE,true)
                 .handler(new LoggingHandler(LogLevel.INFO))
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
-                    protected void initChannel(SocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(new ProtoBufRequestEncoder());
-                        ch.pipeline().addLast(new ProtoBufRequestDecoder());
+                    protected void initChannel(SocketChannel ch) {
+//                        ch.pipeline().addLast(new ObjectDecoder(1024 * 1024, ClassResolvers.weakCachingConcurrentResolver(this.getClass().getClassLoader())));
+//                        ch.pipeline().addLast(new ObjectEncoder());
+//                        ch.pipeline().addLast(new MRpcServerHandler());
+                        ch.pipeline().addLast(new StringDecoder());
+                        ch.pipeline().addLast(new StringEncoder());
+                        ch.pipeline().addLast(new MRpcServerHandler());
                     }
                 });
         try {
@@ -45,5 +53,9 @@ public class NettyMRpcServer extends AbstractMRpcServer {
             bossGroup.shutdownGracefully();
             workGroup.shutdownGracefully();
         }
+    }
+
+    public static void main(String[] args) {
+        new NettyMRpcServer().start(8080);
     }
 }

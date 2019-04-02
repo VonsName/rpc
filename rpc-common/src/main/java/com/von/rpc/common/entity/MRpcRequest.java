@@ -2,6 +2,7 @@ package com.von.rpc.common.entity;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 /**
  * @author ： fjl
@@ -59,5 +60,16 @@ public class MRpcRequest implements Serializable {
 
     public void setParamStringTypes(String[] paramStringTypes) {
         this.paramStringTypes = paramStringTypes;
+    }
+
+    @Override
+    public String toString() {
+        return "MRpcRequest{" +
+                "requestId='" + requestId + '\'' +
+                ", param='" + param + '\'' +
+                ", method=" + method +
+                ", paramTypes=" + paramTypes +
+                ", paramStringTypes=" + Arrays.toString(paramStringTypes) +
+                '}';
     }
 }
