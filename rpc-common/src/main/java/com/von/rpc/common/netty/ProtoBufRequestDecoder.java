@@ -14,7 +14,6 @@ import io.netty.handler.codec.MessageToByteEncoder;
  */
 public class ProtoBufRequestDecoder extends MessageToByteEncoder<MRpcRequest> {
 
-    @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("客户端连接成功");
     }

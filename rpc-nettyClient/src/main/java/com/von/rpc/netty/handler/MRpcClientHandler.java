@@ -1,10 +1,15 @@
 package com.von.rpc.netty.handler;
 
+import com.alibaba.fastjson.JSON;
+import com.von.rpc.common.entity.MRpcRequest;
+import com.von.rpc.common.entity.MRpcResponse;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.UnpooledHeapByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
 
-import java.util.Date;
+import java.util.UUID;
 
 /**
  * @author : vons
@@ -14,7 +19,6 @@ import java.util.Date;
 public class MRpcClientHandler extends ChannelInboundHandlerAdapter {
 
 
-
     /**
      * 客户端与服务端连接成功 发送数据到服务端
      *
@@ -22,22 +26,13 @@ public class MRpcClientHandler extends ChannelInboundHandlerAdapter {
      * @throws Exception
      */
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    public void channelActive(ChannelHandlerContext ctx) {
         System.out.println("客户端与服务端连接成功");
-//        for (int i = 0; i < 10; i++) {
-//            MRpcRequest request = new MRpcRequest();
-//            request.setRequestId(UUID.randomUUID().toString());
-            ctx.writeAndFlush((new Date() + ":helloWord").getBytes()).addListener(future -> {
-                if (future.isSuccess()){
-                    System.out.println("111111");
-                }
-                if (!future.isSuccess()){
-                    System.out.println("2222222222222");
-                }
-                System.out.println(future);
-            });
-//        }
-
+        MRpcRequest request = new MRpcRequest();
+        request.setRequestId(UUID.randomUUID().toString());
+        ByteBuf buffer = ctx.alloc().buffer();
+        buffer.writeBytes(JSON.toJSONString(request).getBytes());
+        ctx.writeAndFlush(buffer);
     }
 
 
@@ -46,13 +41,11 @@ public class MRpcClientHandler extends ChannelInboundHandlerAdapter {
      *
      * @param ctx
      * @param msg
-     * @throws Exception
      */
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
         try {
-            System.out.println("服务端相应...");
-            String response = (String) msg;
+            MRpcResponse response = JSON.parseObject(msg.toString(), MRpcResponse.class);
             System.out.println(response);
         } finally {
             ReferenceCountUtil.release(msg);

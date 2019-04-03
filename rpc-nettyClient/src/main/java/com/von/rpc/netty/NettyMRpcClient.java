@@ -30,6 +30,7 @@ public class NettyMRpcClient extends AbstractMRpcClient {
 //                        ch.pipeline().addLast(new ObjectDecoder(1024 * 1024, ClassResolvers.cacheDisabled(this.getClass().getClassLoader())));
 //                        ch.pipeline().addLast(new ObjectEncoder());
 //                        ch.pipeline().addLast(new MRpcClientHandler());
+
                         ch.pipeline().addLast(new StringDecoder());
                         ch.pipeline().addLast(new StringEncoder());
                         ch.pipeline().addLast(new MRpcClientHandler());
@@ -37,13 +38,7 @@ public class NettyMRpcClient extends AbstractMRpcClient {
                 });
 
         try {
-            ChannelFuture sync = bootstrap.connect(host, port).addListener(future -> {
-                if (future.isSuccess()){
-                    System.out.println("练级成功");
-                }else {
-                    System.out.println("连接。。。。");
-                }
-            });
+            ChannelFuture sync = bootstrap.connect(host, port);
             sync.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
