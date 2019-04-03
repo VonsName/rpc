@@ -1,16 +1,14 @@
 package com.von.rpc.netty.server;
 
-import com.von.rpc.common.entity.MRpcRequest;
-import com.von.rpc.common.entity.MRpcResponse;
-import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 
 /**
  * @author : vons
  * @version : 1.0
  * @date : 2019/4/2 22:17
  */
-public class MRpcServerHandler extends ChannelHandlerAdapter {
+public class MRpcServerHandler extends ChannelInboundHandlerAdapter {
 
 
     @Override

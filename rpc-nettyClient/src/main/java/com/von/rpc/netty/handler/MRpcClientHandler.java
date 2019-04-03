@@ -1,20 +1,18 @@
-package com.von.rpc.netty;
+package com.von.rpc.netty.handler;
 
-import com.von.rpc.common.entity.MRpcRequest;
-import com.von.rpc.common.entity.MRpcResponse;
-import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
 
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * @author : vons
  * @version : 1.0
  * @date : 2019/4/2 22:24
  */
-public class MRpcClientHandler extends ChannelHandlerAdapter {
+public class MRpcClientHandler extends ChannelInboundHandlerAdapter {
+
 
 
     /**
@@ -25,17 +23,27 @@ public class MRpcClientHandler extends ChannelHandlerAdapter {
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        while (true) {
+        System.out.println("客户端与服务端连接成功");
+//        for (int i = 0; i < 10; i++) {
 //            MRpcRequest request = new MRpcRequest();
 //            request.setRequestId(UUID.randomUUID().toString());
-            ctx.writeAndFlush(new Date()+":helloWord");
-            Thread.sleep(2000);
-        }
+            ctx.writeAndFlush((new Date() + ":helloWord").getBytes()).addListener(future -> {
+                if (future.isSuccess()){
+                    System.out.println("111111");
+                }
+                if (!future.isSuccess()){
+                    System.out.println("2222222222222");
+                }
+                System.out.println(future);
+            });
+//        }
+
     }
 
 
     /**
      * ???接收不到服务端返回的数据????
+     *
      * @param ctx
      * @param msg
      * @throws Exception

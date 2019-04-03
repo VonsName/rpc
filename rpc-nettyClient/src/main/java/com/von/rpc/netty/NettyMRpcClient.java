@@ -1,6 +1,7 @@
 package com.von.rpc.netty;
 
 import com.von.rpc.AbstractMRpcClient;
+import com.von.rpc.netty.handler.MRpcClientHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -9,9 +10,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.serialization.ClassResolvers;
-import io.netty.handler.codec.serialization.ObjectDecoder;
-import io.netty.handler.codec.serialization.ObjectEncoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
@@ -39,7 +37,13 @@ public class NettyMRpcClient extends AbstractMRpcClient {
                 });
 
         try {
-            ChannelFuture sync = bootstrap.connect(host, port).sync();
+            ChannelFuture sync = bootstrap.connect(host, port).addListener(future -> {
+                if (future.isSuccess()){
+                    System.out.println("练级成功");
+                }else {
+                    System.out.println("连接。。。。");
+                }
+            });
             sync.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
