@@ -148,6 +148,7 @@ public final class MRpcProtoBufRequest {
       return com.von.rpc.common.entity.MRpcProtoBufRequest.internal_static_com_von_rpc_common_netty_proto_ProtoBufMRpcRequest_descriptor;
     }
 
+    @Override
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return com.von.rpc.common.entity.MRpcProtoBufRequest.internal_static_com_von_rpc_common_netty_proto_ProtoBufMRpcRequest_fieldAccessorTable
@@ -156,14 +157,15 @@ public final class MRpcProtoBufRequest {
     }
 
     public static com.google.protobuf.Parser<ProtoBufMRpcRequest> PARSER =
-        new com.google.protobuf.AbstractParser<ProtoBufMRpcRequest>() {
-      public ProtoBufMRpcRequest parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ProtoBufMRpcRequest(input, extensionRegistry);
-      }
-    };
+            new com.google.protobuf.AbstractParser<>() {
+              @Override
+              public ProtoBufMRpcRequest parsePartialFrom(
+                      com.google.protobuf.CodedInputStream input,
+                      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                      throws com.google.protobuf.InvalidProtocolBufferException {
+                return new ProtoBufMRpcRequest(input, extensionRegistry);
+              }
+            };
 
     @java.lang.Override
     public com.google.protobuf.Parser<ProtoBufMRpcRequest> getParserForType() {

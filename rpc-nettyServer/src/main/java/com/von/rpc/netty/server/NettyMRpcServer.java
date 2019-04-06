@@ -1,6 +1,10 @@
 package com.von.rpc.netty.server;
 
 import com.von.rpc.AbstractMRpcServer;
+import com.von.rpc.common.encipher.MRpcProtoBufResponseDecoder;
+import com.von.rpc.common.encipher.MRpcProtoBufResponseEncoder;
+import com.von.rpc.common.encipher.MRpcProtobufRequestDecoder;
+import com.von.rpc.common.encipher.MRpcProtobufRequestEncoder;
 import com.von.rpc.netty.handler.MRpcServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -9,8 +13,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
@@ -27,7 +29,7 @@ public class NettyMRpcServer extends AbstractMRpcServer {
         bootstrap.group(bossGroup, workGroup)
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_BACKLOG, 1000)
-                .childOption(ChannelOption.SO_KEEPALIVE,true)
+                .childOption(ChannelOption.SO_KEEPALIVE, true)
                 .handler(new LoggingHandler(LogLevel.INFO))
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
@@ -35,9 +37,16 @@ public class NettyMRpcServer extends AbstractMRpcServer {
 //                        ch.pipeline().addLast(new ObjectDecoder(1024 * 1024, ClassResolvers.weakCachingConcurrentResolver(this.getClass().getClassLoader())));
 //                        ch.pipeline().addLast(new ObjectEncoder());
 //                        ch.pipeline().addLast(new MRpcServerHandler());
-                        ch.pipeline().addLast(new StringDecoder());
-                        ch.pipeline().addLast(new StringEncoder());
+
+                        //请求数据编码解码
+                        ch.pipeline().addLast(new MRpcProtobufRequestEncoder());
+                        ch.pipeline().addLast(new MRpcProtobufRequestDecoder());
+
                         ch.pipeline().addLast(new MRpcServerHandler());
+
+//                        //返回数据编码解码
+//                        ch.pipeline().addLast(new MRpcProtoBufResponseEncoder());
+//                        ch.pipeline().addLast(new MRpcProtoBufResponseDecoder());
                     }
                 });
         try {
@@ -54,6 +63,6 @@ public class NettyMRpcServer extends AbstractMRpcServer {
     }
 
     public static void main(String[] args) {
-        new NettyMRpcServer().start(8080);
+        new NettyMRpcServer().start(8081);
     }
 }

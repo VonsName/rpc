@@ -1,6 +1,10 @@
 package com.von.rpc.netty;
 
 import com.von.rpc.AbstractMRpcClient;
+import com.von.rpc.common.encipher.MRpcProtoBufResponseDecoder;
+import com.von.rpc.common.encipher.MRpcProtoBufResponseEncoder;
+import com.von.rpc.common.encipher.MRpcProtobufRequestDecoder;
+import com.von.rpc.common.encipher.MRpcProtobufRequestEncoder;
 import com.von.rpc.netty.handler.MRpcClientHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -31,9 +35,14 @@ public class NettyMRpcClient extends AbstractMRpcClient {
 //                        ch.pipeline().addLast(new ObjectEncoder());
 //                        ch.pipeline().addLast(new MRpcClientHandler());
 
-                        ch.pipeline().addLast(new StringDecoder());
-                        ch.pipeline().addLast(new StringEncoder());
+                        ch.pipeline().addLast(new MRpcProtobufRequestEncoder());
+                        ch.pipeline().addLast(new MRpcProtobufRequestDecoder());
+
                         ch.pipeline().addLast(new MRpcClientHandler());
+
+//                        //返回数据编码解码
+//                        ch.pipeline().addLast(new MRpcProtoBufResponseEncoder());
+//                        ch.pipeline().addLast(new MRpcProtoBufResponseDecoder());
                     }
                 });
 
@@ -50,6 +59,6 @@ public class NettyMRpcClient extends AbstractMRpcClient {
 
     public static void main(String[] args) {
         NettyMRpcClient client = new NettyMRpcClient();
-        client.connect(8080, "localhost");
+        client.connect(8081, "localhost");
     }
 }
