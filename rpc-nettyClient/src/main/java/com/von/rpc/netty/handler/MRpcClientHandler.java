@@ -7,6 +7,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.UnpooledHeapByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.ReferenceCountUtil;
 
 import java.util.UUID;
@@ -15,8 +16,9 @@ import java.util.UUID;
  * @author : vons
  * @version : 1.0
  * @date : 2019/4/2 22:24
+ * ChannelInboundHandlerAdapter
  */
-public class MRpcClientHandler extends ChannelInboundHandlerAdapter {
+public class MRpcClientHandler extends SimpleChannelInboundHandler<MRpcResponse> {
 
 
     /**
@@ -42,14 +44,19 @@ public class MRpcClientHandler extends ChannelInboundHandlerAdapter {
      * @param ctx
      * @param msg
      */
+//    @Override
+//    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+//        try {
+//            MRpcResponse response = JSON.parseObject(msg.toString(), MRpcResponse.class);
+//            System.out.println(response);
+//        } finally {
+//            ReferenceCountUtil.release(msg);
+//        }
+//    }
+
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        try {
-            MRpcResponse response = JSON.parseObject(msg.toString(), MRpcResponse.class);
-            System.out.println(response);
-        } finally {
-            ReferenceCountUtil.release(msg);
-        }
+    protected void channelRead0(ChannelHandlerContext ctx, MRpcResponse response) throws Exception {
+        System.out.println("服务端返回的数据：" + response);
     }
 
     @Override

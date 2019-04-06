@@ -3,13 +3,18 @@ package com.von.rpc.common.netty.proto;
 option java_package = "com.von.rpc.common.entity";
 option java_outer_classname = "MRpcProtoBufRequest";
 
-message ProtoBufMRpcRequest{
+//protoc.exe -I=./ ProtoBufMRpcRequest.proto --java_out=D:/myTest/rpc/rpc-common/src/main/java
+//protoc使用注意事项：-I的路径后面跟的文件一定要隔开一个空格
+//暂时只能使用当前目录指定.proto文件,使用绝对路径还是Missing input file
+message ProtoBufMRpcRequest {
     //请求id
     required string requestId = 1;
     //请求参数
-    repeated string parameterTypes = 2 ;
-    //请求参数名称
-    repeated string args = 3 ;
-    //请求方法名称
-    required string methodName = 4;
+    required string requestUrl = 2;
+
+    message MRpcMethod {
+        required string name = 1;
+        repeated string args = 2;
+        repeated string paramType = 3;
+    }
 }

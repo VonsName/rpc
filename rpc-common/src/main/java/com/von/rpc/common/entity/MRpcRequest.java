@@ -45,4 +45,13 @@ public class MRpcRequest implements Serializable {
     public void setmRpcMethod(MRpcMethod mRpcMethod) {
         this.mRpcMethod = mRpcMethod;
     }
+
+    @Override
+    public String toString() {
+        return "MRpcRequest{" +
+                "requestId='" + requestId + '\'' +
+                ", requestUrl='" + requestUrl + '\'' +
+                ", mRpcMethod=" + mRpcMethod +
+                '}';
+    }
 }

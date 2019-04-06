@@ -6,8 +6,10 @@ option java_outer_classname = "MRpcProtoBufResponse";
 message ProtoBufMRpcResponse{
     //请求id
     required string requestId = 1;
-    //请求参数
+    //返回结果
     required string result = 2 ;
-    //请求参数名称
+    //异常信息
     required string exception = 3 ;
+    //异常class
+    required string exceptionClass = 4 ;
 }

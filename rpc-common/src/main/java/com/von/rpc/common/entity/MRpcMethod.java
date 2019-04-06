@@ -18,9 +18,9 @@ public class MRpcMethod {
      */
     private Object[] args;
     /**
-     * 参数类型
+     * 参数类型(String.class)
      */
-    private Class<?>[] paramType;
+    private String[] paramType;
 
     public String getName() {
         return name;
@@ -38,11 +38,11 @@ public class MRpcMethod {
         this.args = args;
     }
 
-    public Class<?>[] getParamType() {
+    public String[] getParamType() {
         return paramType;
     }
 
-    public void setParamType(Class<?>[] paramType) {
+    public void setParamType(String[] paramType) {
         this.paramType = paramType;
     }
 
