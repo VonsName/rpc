@@ -1,0 +1,12 @@
+option cc_generic_services = true;
+
+message Request {
+    required string requestId = 1;
+    repeated string args = 2;
+}
+message Response {
+    required string requestId = 1;
+}
+service SearchService {
+    rpc Search (Request) returns (Response);
+}

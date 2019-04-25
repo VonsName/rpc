@@ -1,0 +1,20 @@
+package com.von.rpc.common.netty.proto;
+
+option java_package = "com.von.rpc.common.entity";
+option java_outer_classname = "ComplexResult";
+
+message ComplexTest {
+    repeated Result result = 1;
+    optional Exception exception = 2;
+}
+
+message Result {
+    required string requestId = 1;
+    required string responseId = 2;
+    required string data = 3;
+}
+
+message Exception {
+    required string exClazz = 1;
+    required string exMessage = 2;
+}
