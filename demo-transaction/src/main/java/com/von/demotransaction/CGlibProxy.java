@@ -12,23 +12,25 @@ import java.lang.reflect.Method;
  */
 public class CGlibProxy implements MethodInterceptor {
 
-    private Object proxy;
+    private Object target;
 
-    public Object getInstance(Object proxy) {
-        this.proxy = proxy;
+    public Object getInstance(Object target) {
+        this.target = target;
         Enhancer enhancer = new Enhancer();
-        enhancer.setSuperclass(this.proxy.getClass());
+        enhancer.setSuperclass(this.target.getClass());
         enhancer.setCallback(this);
         return enhancer.create();
     }
 
     @Override
-    public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
+    public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
 
 
-        System.out.println("before---");
-        Object res = methodProxy.invokeSuper(o, objects);
-        System.out.println("after----");
+        System.out.println("cglib before---");
+        Object res = methodProxy.invoke(target, args);
+//        Object res = methodProxy.invokeSuper(o, args);
+//        Object res = method.invoke(target, args);
+        System.out.println("cglib after----");
         return res;
     }
 
