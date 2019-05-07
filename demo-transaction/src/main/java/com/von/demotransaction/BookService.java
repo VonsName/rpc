@@ -1,8 +1,11 @@
 package com.von.demotransaction;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.InitBinder;
 
 import java.util.UUID;
 
@@ -12,6 +15,9 @@ import java.util.UUID;
  */
 @Service
 public class BookService {
+
+
+    IMethodFilter methodFilter=(method -> AnnotatedElementUtils.hasAnnotation(method,InitBinder.class));
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
